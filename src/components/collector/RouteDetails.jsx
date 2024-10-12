@@ -1,12 +1,24 @@
 import React, { useState } from "react";
-import { Box, Typography, Button } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Button,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Alert,
+} from "@mui/material";
 import Map from "./Map";
 import ChangeCollectorModal from "./ChangeCollectorModal";
 import OptimizedRouteModal from "./OptimizedRouteModal";
+import axios from "axios"; // Ensure axios is imported for API calls
 
 const RouteDetails = ({ route }) => {
   const [collectorModalOpen, setCollectorModalOpen] = useState(false);
   const [optimizedRouteModalOpen, setOptimizedRouteModalOpen] = useState(false);
+  const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
+  const [deleteError, setDeleteError] = useState("");
 
   const handleOpenCollectorModal = () => {
     setCollectorModalOpen(true);
@@ -22,6 +34,31 @@ const RouteDetails = ({ route }) => {
 
   const handleCloseOptimizedRouteModal = () => {
     setOptimizedRouteModalOpen(false);
+  };
+
+  const handleOpenConfirmDelete = () => {
+    setConfirmDeleteOpen(true);
+  };
+
+  const handleCloseConfirmDelete = () => {
+    setConfirmDeleteOpen(false);
+  };
+
+  const handleDeleteRoute = async () => {
+    try {
+      const response = await axios.delete(
+        `http://localhost:8080/api/croutes/${route.routeId}`
+      );
+      if (response.status === 200) {
+        // Optionally, handle route deletion in the parent component
+        alert("Route deleted successfully!");
+        handleCloseConfirmDelete();
+        // Redirect or refresh the route list as necessary
+      }
+    } catch (error) {
+      console.error("Error deleting route:", error);
+      setDeleteError("Failed to delete the route. Please try again.");
+    }
   };
 
   const handleUpdateCollectors = (updatedCollectors) => {
@@ -81,6 +118,14 @@ const RouteDetails = ({ route }) => {
         >
           Change Collector
         </Button>
+        <Button
+          variant="outlined"
+          color="error"
+          sx={{ flexGrow: 1 }}
+          onClick={handleOpenConfirmDelete}
+        >
+          Delete Route
+        </Button>
       </Box>
 
       <ChangeCollectorModal
@@ -97,6 +142,23 @@ const RouteDetails = ({ route }) => {
         onClose={handleCloseOptimizedRouteModal}
         route={route}
       />
+
+      {/* Confirmation Dialog */}
+      <Dialog open={confirmDeleteOpen} onClose={handleCloseConfirmDelete}>
+        <DialogTitle>Confirm Deletion</DialogTitle>
+        <DialogContent>
+          <Typography>Are you sure you want to delete this route?</Typography>
+          {deleteError && <Alert severity="error">{deleteError}</Alert>}
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseConfirmDelete} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={handleDeleteRoute} color="error">
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 };
