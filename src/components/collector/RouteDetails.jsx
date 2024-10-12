@@ -2,20 +2,31 @@ import React, { useState } from "react";
 import { Box, Typography, Button } from "@mui/material";
 import Map from "./Map";
 import ChangeCollectorModal from "./ChangeCollectorModal";
+import OptimizedRouteModal from "./OptimizedRouteModal"; // Import the new modal
 
 const RouteDetails = ({ route }) => {
-  const [modalOpen, setModalOpen] = useState(false);
+  const [collectorModalOpen, setCollectorModalOpen] = useState(false);
+  const [optimizedRouteModalOpen, setOptimizedRouteModalOpen] = useState(false);
 
-  const handleOpenModal = () => {
-    setModalOpen(true);
+  const handleOpenCollectorModal = () => {
+    setCollectorModalOpen(true);
   };
 
-  const handleCloseModal = () => {
-    setModalOpen(false);
+  const handleCloseCollectorModal = () => {
+    setCollectorModalOpen(false);
+  };
+
+  const handleOpenOptimizedRouteModal = () => {
+    setOptimizedRouteModalOpen(true);
+  };
+
+  const handleCloseOptimizedRouteModal = () => {
+    setOptimizedRouteModalOpen(false);
   };
 
   const handleUpdateCollectors = (updatedCollectors) => {
     console.log("Updated Collectors:", updatedCollectors);
+    // Optionally, you could re-fetch or update the route data here
   };
 
   return (
@@ -25,6 +36,7 @@ const RouteDetails = ({ route }) => {
         bgcolor: "#F5F5F5",
         borderRadius: "8px",
         boxShadow: 1,
+        marginTop: -7,
       }}
     >
       <Typography variant="h6">{route.routeName}</Typography>
@@ -55,23 +67,35 @@ const RouteDetails = ({ route }) => {
         <Map />
       </Box>
       <Box sx={{ display: "flex", gap: "8px", marginTop: "16px" }}>
-        <Button variant="contained" sx={{ flexGrow: 1 }}>
+        <Button
+          variant="contained"
+          sx={{ flexGrow: 1 }}
+          onClick={handleOpenOptimizedRouteModal} // Open optimized route modal
+        >
           Optimized Route
         </Button>
         <Button
           variant="outlined"
           sx={{ flexGrow: 1 }}
-          onClick={handleOpenModal}
+          onClick={handleOpenCollectorModal} // Open change collector modal
         >
           Change Collector
         </Button>
       </Box>
 
       <ChangeCollectorModal
-        open={modalOpen}
-        onClose={handleCloseModal}
+        open={collectorModalOpen}
+        onClose={handleCloseCollectorModal}
         currentCollectors={route.collectors}
-        onUpdateCollectors={handleUpdateCollectors}
+        routeId={route.id} // Ensure routeId is passed here
+        routeDetails={route} // Pass the full route details to the modal
+        onUpdateSuccess={handleUpdateCollectors} // Triggered on successful update
+      />
+
+      <OptimizedRouteModal
+        open={optimizedRouteModalOpen}
+        onClose={handleCloseOptimizedRouteModal} // Close optimized route modal
+        route={route} // Pass the route to the modal
       />
     </Box>
   );
