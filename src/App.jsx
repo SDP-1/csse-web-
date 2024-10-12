@@ -13,7 +13,7 @@ const App = () => {
         <Route path="/wma" element={<WMA />} />
         <Route path="/admin" element={<Admin />} />
         <Route path="/resident" element={<Resident />} />
-        <Route path="/collector" element={<Contoller />} >
+        <Route path="/collector/" element={<WasteCollectorProfile />} >
           <Route path="/home" element={<WasteCollectorProfile />} />
         </Route>
       </Routes>
