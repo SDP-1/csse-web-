@@ -7,7 +7,7 @@ import {
   Button,
   IconButton,
 } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close"; // Import the close icon
+import CloseIcon from "@mui/icons-material/Close";
 
 const style = {
   position: "absolute",
@@ -27,9 +27,11 @@ const AddRouteModal = ({ open, handleClose, handleAddRoute }) => {
   const [endLocation, setEndLocation] = useState("");
   const [area, setArea] = useState("");
 
-  const handleSubmit = (event) => {
+  // Function to handle form submission and sending data to the backend
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
+    // Create the new route object
     const newRoute = {
       routeName,
       routeDescription,
@@ -37,10 +39,32 @@ const AddRouteModal = ({ open, handleClose, handleAddRoute }) => {
       endLocation,
       area,
       lastOptimizedDate: new Date().toISOString(),
+      collectors: [], // Initialize empty collectors array
+      locations: [], // Initialize empty locations array
     };
 
-    handleAddRoute(newRoute);
-    handleClose();
+    try {
+      // Send the new route data to the backend
+      const response = await fetch("http://localhost:8080/api/croutes", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newRoute),
+      });
+
+      // Handle response from the backend
+      if (!response.ok) {
+        throw new Error("Failed to add the route");
+      }
+
+      // Parse the JSON response and add the new route to the frontend state
+      const createdRoute = await response.json();
+      handleAddRoute(createdRoute); // Add the created route to the state in the parent component
+      handleClose(); // Close the modal after successful submission
+    } catch (error) {
+      console.error("Error adding route:", error);
+    }
   };
 
   return (
