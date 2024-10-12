@@ -1,37 +1,44 @@
 import React from "react";
 import {
+  Box,
   Container,
   Typography,
   Grid,
   Paper,
   Button,
-  Rating,
-} from "@mui/material"; // import MUI components
+} from "@mui/material"; 
 import Map from "../../components/collector/Map";
+import ProfileCard from "../../components/collector/ProfileCard"; 
+
 
 const WasteCollectorProfile = () => {
   return (
     <Container>
+      <Box 
+      sx={{
+        backgroundColor: '#F5F5F5', // Gray background
+        borderRadius: '16px', // Rounded corners
+        padding: '10px', // Padding around the text
+        width: '100%', // Full width
+        marginBottom: '20px', // Bottom margin
+        marginTop : '20px',
+      }}
+    >
       <Typography variant="h4" gutterBottom>
         Waste Collectors
       </Typography>
-      <Grid container spacing={2}>
-        {/* Profile Section */}
-        <Grid item xs={12} sm={6} md={4}>
-          <Paper elevation={3} style={{ padding: "16px" }}>
-            <Typography variant="h6">Profile</Typography>
-            <Typography>Name: Desan Wickramasooriya</Typography>
-            <Typography>ID: IW 002</Typography>
-            <Typography>Status: Working</Typography>
-            <Typography variant="h6" style={{ marginTop: "16px" }}>
-              Performance
-            </Typography>
-            <Typography>Routes Completed: 04</Typography>
-            <Typography>Average Time on Route: 1h 30m</Typography>
-            <Typography>No. of Complaints: N/A</Typography>
-            <Rating name="read-only" value={4} readOnly />
-          </Paper>
-        </Grid>
+    </Box>
+      <Grid container spacing={3}>
+        {/* Use ProfileCard component */}
+        <ProfileCard
+          name="Sehan Devinda"
+          id="IW 002"
+          status="Working"
+          imageSrc="../src/assets/user/defaultUser.jpg" // Pass the image source
+          routesCompleted={4}
+          avgTimeOnRoute="1h 30m"
+          complaints="N/A"
+        />
 
         {/* Assigned Route Section */}
         <Grid item xs={12} sm={6} md={8}>
