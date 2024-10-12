@@ -52,12 +52,13 @@ const ChangeCollectorModal = ({
     setCollectors(updatedCollectors);
   };
 
-  // Handle form submission and API call
   const handleSubmit = async () => {
     try {
-      const updatedCollectors = collectors.filter(
-        (collector) => collector.trim() !== ""
-      );
+      const updatedCollectors = collectors
+        .filter(
+          (collector) => collector.trim() !== "" && collector !== "undefined"
+        )
+        .map((collector) => Number(collector)); // Convert to numbers
 
       // Validate that at least one collector ID is provided
       if (updatedCollectors.length === 0) {
@@ -65,27 +66,35 @@ const ChangeCollectorModal = ({
         return;
       }
 
-      const payload = {
-        routeName: routeDetails.routeName,
-        routeDescription: routeDetails.routeDescription,
-        startLocation: routeDetails.startLocation,
-        endLocation: routeDetails.endLocation,
-        area: routeDetails.area,
-        lastOptimizedDate: routeDetails.lastOptimizedDate,
-        collectors: updatedCollectors.map(Number), // Convert to numbers if necessary
-        locationIds: routeDetails.locationIds,
-      };
+      console.log("Updated Collectors:", updatedCollectors); // Debugging line
+      console.log("Rour ID : ", routeId);
 
-      const response = await axios.put(
-        `http://localhost:8080/api/croutes/${routeId}`,
-        payload
+      // Get collectors that need to be added and removed
+      const collectorsToAdd = updatedCollectors.filter(
+        (collector) => !currentCollectors.includes(collector)
+      );
+      const collectorsToRemove = currentCollectors.filter(
+        (collector) => !updatedCollectors.includes(collector)
       );
 
-      if (response.status === 200) {
-        onUpdateSuccess(updatedCollectors); // Notify parent component
-        onClose(); // Close modal
-        alert("Route updated successfully!");
+      // Add new collectors
+      for (const collectorId of collectorsToAdd) {
+        await axios.post(
+          `http://localhost:8080/api/croutes/${routeId}/collectors/${collectorId}`
+        );
       }
+
+      // Remove old collectors
+      for (const collectorId of collectorsToRemove) {
+        await axios.delete(
+          `http://localhost:8080/api/croutes/${routeId}/collectors/${collectorId}`
+        );
+      }
+
+      // Notify parent component of successful update
+      onUpdateSuccess(updatedCollectors);
+      onClose(); // Close modal
+      alert("Route updated successfully!");
     } catch (error) {
       console.error("Error updating route:", error);
       setErrorMessage(
