@@ -61,6 +61,14 @@ const AddRouteModal = ({ open, handleClose, handleAddRoute }) => {
       // Parse the JSON response and add the new route to the frontend state
       const createdRoute = await response.json();
       handleAddRoute(createdRoute); // Add the created route to the state in the parent component
+
+      // Clear the input fields after successful submission
+      setRouteName("");
+      setRouteDescription("");
+      setStartLocation("");
+      setEndLocation("");
+      setArea("");
+
       handleClose(); // Close the modal after successful submission
     } catch (error) {
       console.error("Error adding route:", error);
@@ -70,7 +78,13 @@ const AddRouteModal = ({ open, handleClose, handleAddRoute }) => {
   return (
     <Modal open={open} onClose={handleClose}>
       <Box sx={style}>
-        <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
           <Typography variant="h6" component="h2" gutterBottom>
             Add New Route
           </Typography>
@@ -120,7 +134,11 @@ const AddRouteModal = ({ open, handleClose, handleAddRoute }) => {
             margin="normal"
           />
           <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 2 }}>
-            <Button variant="outlined" onClick={handleClose} sx={{ marginRight: 1 }}>
+            <Button
+              variant="outlined"
+              onClick={handleClose}
+              sx={{ marginRight: 1 }}
+            >
               Cancel
             </Button>
             <Button variant="contained" type="submit">
