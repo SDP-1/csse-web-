@@ -88,16 +88,18 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
   }),
 );
 
-export default function PersistentDrawer() {
+export default function PersistentDrawer({ onDrawerToggle }) {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
 
   const handleDrawerOpen = () => {
     setOpen(true);
+    onDrawerToggle(true); // Notify parent that drawer is open
   };
 
   const handleDrawerClose = () => {
     setOpen(false);
+    onDrawerToggle(false); // Notify parent that drawer is closed
   };
 
   return (
