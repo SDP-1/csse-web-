@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import { useState, useRef } from 'react';
 import html2canvas from 'html2canvas'; // For capturing charts as images
 import jsPDF from 'jspdf'; // For PDF download
 import NavBar from '../../components/WasteManagementAuthority/WMANavBar';

@@ -23,7 +23,8 @@ import InboxIcon from '@mui/icons-material/Inbox';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { Dashboard, LockClock } from '@mui/icons-material';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import { useNavigate } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 const drawerWidth = 300;
 
@@ -202,3 +203,8 @@ export default function PersistentDrawer({ onDrawerToggle }) {
     </Box>
   );
 }
+
+// Define prop types
+PersistentDrawer.propTypes = {
+  onDrawerToggle: PropTypes.func.isRequired, // Ensure that onDrawerToggle is a required function prop
+};

@@ -1,6 +1,7 @@
 // InfoCard.jsx
 // import React from 'react';
 import { Card, Typography, Box } from '@mui/material';
+import PropTypes from 'prop-types';
 
 const InfoCard = ({ icon: Icon, title, value }) => {
   return (
@@ -24,6 +25,13 @@ const InfoCard = ({ icon: Icon, title, value }) => {
       </Box>
     </Card>
   );
+};
+
+// Define prop types
+InfoCard.propTypes = {
+  icon: PropTypes.elementType.isRequired,
+  title: PropTypes.string.isRequired,
+  value: PropTypes.string.isRequired,
 };
 
 export default InfoCard;

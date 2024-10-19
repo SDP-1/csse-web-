@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import NavBar from '../../components/WasteManagementAuthority/WMANavBar';
 import InfoCard from '../../components/WasteManagementAuthority/InfoCard';
 import { Grid, Box } from '@mui/material';
