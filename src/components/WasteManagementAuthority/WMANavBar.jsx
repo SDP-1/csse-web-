@@ -11,7 +11,7 @@ import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
@@ -23,6 +23,7 @@ import InboxIcon from '@mui/icons-material/Inbox';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { Dashboard } from '@mui/icons-material';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
 const drawerWidth = 240;
 
@@ -73,7 +74,7 @@ const AppBar = styled(MuiAppBar, {
   }),
 }));
 
-const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
+const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(  
   ({ theme, open }) => ({
     width: drawerWidth,
     flexShrink: 0,
@@ -91,6 +92,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 export default function PersistentDrawer({ onDrawerToggle }) {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
+  const navigate = useNavigate(); // Initialize the navigate function
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -100,6 +102,10 @@ export default function PersistentDrawer({ onDrawerToggle }) {
   const handleDrawerClose = () => {
     setOpen(false);
     onDrawerToggle(false); // Notify parent that drawer is closed
+  };
+
+  const handleNavigation = (path) => {
+    navigate(path); // Navigate to the specified path
   };
 
   return (
@@ -133,12 +139,12 @@ export default function PersistentDrawer({ onDrawerToggle }) {
         <Divider />
         <List>
           {[
-            { text: 'Dashboard', icon: <Dashboard /> },
-            { text: 'Waste Reports', icon: <AssessmentIcon /> },
+            { text: 'Dashboard', icon: <Dashboard />, path: '/waste-dashboard' },
+            { text: 'Waste Reports', icon: <AssessmentIcon />, path: '/waste-reports' },
             { text: 'Data Analytics', icon: <BarChartIcon /> },
             { text: 'Manage Waste Bins', icon: <InboxIcon /> },
             { text: 'Account Settings', icon: <SettingsIcon /> },
-          ].map((item, index) => (
+          ].map((item) => (
             <ListItem key={item.text} disablePadding sx={{ display: 'block' }}>
               <ListItemButton
                 sx={{
@@ -146,6 +152,7 @@ export default function PersistentDrawer({ onDrawerToggle }) {
                   px: 2.5,
                   justifyContent: open ? 'initial' : 'center',
                 }}
+                onClick={() => item.path && handleNavigation(item.path)} // Handle click to navigate
               >
                 <ListItemIcon
                   sx={{
