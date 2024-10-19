@@ -22,10 +22,10 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import InboxIcon from '@mui/icons-material/Inbox';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import LogoutIcon from '@mui/icons-material/Logout';
-import { Dashboard } from '@mui/icons-material';
+import { Dashboard, LockClock } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
-const drawerWidth = 240;
+const drawerWidth = 300;
 
 const openedMixin = (theme) => ({
   width: drawerWidth,
@@ -141,9 +141,11 @@ export default function PersistentDrawer({ onDrawerToggle }) {
           {[
             { text: 'Dashboard', icon: <Dashboard />, path: '/waste-dashboard' },
             { text: 'Waste Reports', icon: <AssessmentIcon />, path: '/waste-reports' },
-            { text: 'Data Analytics', icon: <BarChartIcon /> },
-            { text: 'Manage Waste Bins', icon: <InboxIcon /> },
-            { text: 'Account Settings', icon: <SettingsIcon /> },
+            { text: 'Waste Collection History', icon: <LockClock />, path: '/waste-history' },
+            { text: 'Waste Collection Requests', icon: <InboxIcon />, path: '/waste-requests' },
+            { text: 'Schedule Collection Routes', icon: <BarChartIcon />, path: '/schedule-routes' },
+            { text: 'Manage Complaints', icon: <SettingsIcon />, path: '/manage-complaints' },
+            { text: 'Manage Users', icon: <AccountCircleIcon />, path: '/manage-users' },
           ].map((item) => (
             <ListItem key={item.text} disablePadding sx={{ display: 'block' }}>
               <ListItemButton

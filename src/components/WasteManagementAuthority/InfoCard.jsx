@@ -1,6 +1,6 @@
 // InfoCard.jsx
-import React from 'react';
-import { Card, CardContent, Typography, Box } from '@mui/material';
+// import React from 'react';
+import { Card, Typography, Box } from '@mui/material';
 
 const InfoCard = ({ icon: Icon, title, value }) => {
   return (
